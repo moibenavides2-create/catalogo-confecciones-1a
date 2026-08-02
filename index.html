@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Confecciones 1A - Tu Estilo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FFF9F2;
+    --azul:#4FA8D8;
+    --azul-dark:#2E7DAF;
+    --rosa:#F2739E;
+    --rosa-dark:#D9457E;
+    --navy:#1F2A54;
+    --amarillo:#FFC857;
+    --card-radius: 22px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Quicksand', sans-serif;
+    background:var(--cream);
+    color:var(--navy);
+    overflow-x:hidden;
+  }
+  h1,h2,h3, .display{
+    font-family:'Baloo 2', sans-serif;
+  }
+
+  /* ---------- ZIGZAG / SCALLOP DIVIDER (motivo de tela de confección) ---------- */
+  .zigzag{
+    height:22px;
+    width:100%;
+    background:
+      linear-gradient(135deg, transparent 50%, var(--cream) 50%) 0 0,
+      linear-gradient(-135deg, transparent 50%, var(--cream) 50%) 0 0;
+    background-size: 22px 22px;
+    background-repeat: repeat-x;
+  }
+  .zigzag.flip{ transform: rotate(180deg); }
+
+  /* ---------- HEADER ---------- */
+  header{
+    background:var(--navy);
+    padding: 14px 6vw;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    position:sticky;
+    top:0;
+    z-index:50;
+  }
+  .brand{ display:flex; align-items:center; gap:12px; }
+  .brand img{ height:52px; width:52px; border-radius:50%; }
+  .brand-text{ color:white; line-height:1.1; }
+  .brand-text .name{ font-family:'Baloo 2'; font-size:1.25rem; font-weight:700; }
+  .brand-text .tag{ font-size:0.72rem; letter-spacing:2px; color:var(--amarillo); font-weight:600; }
+
+  .cart-btn{
+    position:relative;
+    background:var(--rosa);
+    border:none;
+    color:white;
+    font-family:'Baloo 2';
+    font-weight:600;
+    font-size:0.95rem;
+    padding:10px 18px;
+    border-radius:30px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    transition: transform .15s ease, background .2s ease;
+  }
+  .cart-btn:hover{ background:var(--rosa-dark); transform:translateY(-2px); }
+  .cart-count{
+    background:var(--amarillo);
+    color:var(--navy);
+    font-weight:800;
+    border-radius:50%;
+    width:22px; height:22px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:0.78rem;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background: linear-gradient(120deg, var(--azul) 0%, var(--azul) 45%, var(--rosa) 100%);
+    padding: 64px 6vw 90px;
+    text-align:center;
+    color:white;
+    position:relative;
+  }
+  .hero h1{
+    font-size: clamp(2.1rem, 5vw, 3.4rem);
+    line-height:1.1;
+    text-shadow: 0 3px 0 rgba(0,0,0,0.08);
+  }
+  .hero h1 span{ color:var(--amarillo); }
+  .hero p{
+    font-size:1.05rem;
+    max-width:560px;
+    margin: 14px auto 0;
+    font-weight:500;
+    opacity:0.95;
+  }
+  .hero .bounce{
+    display:inline-block;
+    animation: bounce 2.4s ease-in-out infinite;
+  }
+  @keyframes bounce{
+    0%,100%{ transform: translateY(0) rotate(-3deg); }
+    50%{ transform: translateY(-8px) rotate(3deg); }
+  }
+
+  /* ---------- CATEGORY TABS ---------- */
+  .tabs{
+    display:flex;
+    justify-content:center;
+    gap:14px;
+    margin: -46px 0 40px;
+    position:relative;
+    z-index:10;
+    flex-wrap:wrap;
+    padding: 0 6vw;
+  }
+  .tab{
+    font-family:'Baloo 2';
+    font-weight:700;
+    font-size:1rem;
+    padding: 14px 30px;
+    border-radius:50px;
+    border:none;
+    cursor:pointer;
+    background:white;
+    color:var(--navy);
+    box-shadow: 0 8px 20px rgba(31,42,84,0.15);
+    transition: all .2s ease;
+  }
+  .tab.active[data-cat="nino"]{ background:var(--azul); color:white; }
+  .tab.active[data-cat="nina"]{ background:var(--rosa); color:white; }
+  .tab.active[data-cat="todos"]{ background:var(--navy); color:white; }
+  .tab:hover{ transform: translateY(-3px); }
+
+  /* ---------- GRID ---------- */
+  .grid-wrap{ padding: 0 6vw 60px; }
+  .section-title{
+    font-size:1.5rem;
+    margin-bottom:22px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px,1fr));
+    gap: 26px;
+  }
+  .card{
+    background:white;
+    border-radius: var(--card-radius);
+    overflow:hidden;
+    box-shadow: 0 10px 24px rgba(31,42,84,0.08);
+    transition: transform .2s ease, box-shadow .2s ease;
+    display:flex;
+    flex-direction:column;
+  }
+  .card:hover{ transform: translateY(-6px); box-shadow: 0 16px 32px rgba(31,42,84,0.16); }
+  .card .img-wrap{
+    aspect-ratio: 1/1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+  }
+  .card[data-cat="nino"] .img-wrap{ background: linear-gradient(160deg,#DFF1FC, #B9E1F5); }
+  .card[data-cat="nina"] .img-wrap{ background: linear-gradient(160deg,#FDE3ED, #FBC7DD); }
+  .card .img-wrap svg{ width:58%; height:58%; }
+  .card .badge{
+    position:absolute; top:10px; left:10px;
+    font-size:0.68rem; font-weight:700; font-family:'Baloo 2';
+    padding: 4px 10px; border-radius:20px; color:white;
+  }
+  .card[data-cat="nino"] .badge{ background:var(--azul-dark); }
+  .card[data-cat="nina"] .badge{ background:var(--rosa-dark); }
+  .card .info{ padding: 16px 16px 18px; display:flex; flex-direction:column; gap:10px; flex:1;}
+  .card .info .modelo{ font-family:'Baloo 2'; font-weight:700; font-size:1.05rem; }
+  .card .info .desc{ font-size:0.82rem; color:#6b7590; }
+  .add-btn{
+    margin-top:auto;
+    border:none;
+    font-family:'Baloo 2';
+    font-weight:700;
+    font-size:0.9rem;
+    padding:10px;
+    border-radius:14px;
+    cursor:pointer;
+    color:white;
+    transition: filter .15s ease;
+  }
+  .card[data-cat="nino"] .add-btn{ background:var(--azul); }
+  .card[data-cat="nina"] .add-btn{ background:var(--rosa); }
+  .add-btn:hover{ filter:brightness(1.08); }
+  .add-btn.added{ background:var(--amarillo) !important; color:var(--navy); }
+
+  /* ---------- CART DRAWER ---------- */
+  .overlay{
+    position:fixed; inset:0; background:rgba(31,42,84,0.45);
+    opacity:0; pointer-events:none; transition:opacity .25s ease; z-index:90;
+  }
+  .overlay.open{ opacity:1; pointer-events:auto; }
+  .drawer{
+    position:fixed; top:0; right:-420px; width:min(400px,90vw); height:100%;
+    background:var(--cream); z-index:100;
+    box-shadow: -12px 0 30px rgba(0,0,0,0.15);
+    transition: right .3s ease;
+    display:flex; flex-direction:column;
+  }
+  .drawer.open{ right:0; }
+  .drawer-header{
+    background:var(--navy); color:white; padding:20px 22px;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .drawer-header h3{ font-size:1.2rem; }
+  .drawer-header button{
+    background:none; border:none; color:white; font-size:1.4rem; cursor:pointer;
+  }
+  .drawer-items{ flex:1; overflow-y:auto; padding: 16px 20px; display:flex; flex-direction:column; gap:14px;}
+  .empty-msg{ text-align:center; color:#8a93ac; margin-top:40px; font-weight:600; }
+  .drawer-item{
+    background:white; border-radius:16px; padding:12px; display:flex; gap:12px; align-items:center;
+    box-shadow: 0 4px 12px rgba(31,42,84,0.06);
+  }
+  .drawer-item .thumb{
+    width:52px; height:52px; border-radius:12px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .drawer-item .thumb svg{ width:60%; height:60%; }
+  .drawer-item .meta{ flex:1; }
+  .drawer-item .meta .modelo{ font-family:'Baloo 2'; font-weight:700; font-size:0.92rem; }
+  .drawer-item .meta .cat{ font-size:0.72rem; color:#8a93ac; }
+  .qty-ctrl{ display:flex; align-items:center; gap:8px; }
+  .qty-ctrl button{
+    width:24px; height:24px; border-radius:50%; border:none; background:var(--navy); color:white;
+    font-weight:700; cursor:pointer; font-size:0.9rem; line-height:1;
+  }
+  .qty-ctrl span{ font-weight:700; min-width:16px; text-align:center; }
+  .remove-btn{ background:none; border:none; color:#d9457e; cursor:pointer; font-size:0.75rem; text-decoration:underline; }
+
+  .drawer-footer{ padding:18px 20px 24px; background:white; border-top:2px dashed #e3e6ef; }
+  .drawer-footer .note{ font-size:0.78rem; color:#6b7590; margin-bottom:12px; text-align:center; }
+  .whatsapp-btn{
+    width:100%; background:#25D366; color:white; border:none; padding:15px;
+    border-radius:16px; font-family:'Baloo 2'; font-weight:700; font-size:1.02rem;
+    cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px;
+    transition: filter .15s ease;
+  }
+  .whatsapp-btn:hover{ filter:brightness(1.06); }
+  .whatsapp-btn:disabled{ background:#c7cbd6; cursor:not-allowed; }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    background:var(--navy); color:white; text-align:center; padding: 40px 6vw 30px;
+  }
+  footer .name{ font-family:'Baloo 2'; font-weight:700; font-size:1.2rem; }
+  footer .wa{ margin-top:8px; font-size:0.9rem; color:#c9d3f5; }
+  footer .tag{ margin-top:16px; font-size:0.72rem; color:#8b94b8; }
+
+  @media (max-width:600px){
+    .hero{ padding: 46px 6vw 76px; }
+    .tabs{ margin-top:-36px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <img src="logo-placeholder.png" alt="Logo Confecciones 1A" onerror="this.style.display='none'">
+    <div class="brand-text">
+      <div class="name">Confecciones 1A</div>
+      <div class="tag">TU ESTILO</div>
+    </div>
+  </div>
+  <button class="cart-btn" onclick="openCart()">
+    🛍️ Carrito <span class="cart-count" id="cartCount">0</span>
+  </button>
+</header>
+
+<section class="hero">
+  <h1><span class="bounce">✨</span> Conjuntos con <span>estilo propio</span> para tu peque</h1>
+  <p>Explora nuestros modelos para niño y niña. Elige tus favoritos y arma tu pedido: la talla y el precio los confirmamos contigo directo por WhatsApp.</p>
+</section>
+
+<div class="tabs">
+  <button class="tab active" data-cat="todos" onclick="filterCat('todos')">Todos</button>
+  <button class="tab" data-cat="nino" onclick="filterCat('nino')">Niño</button>
+  <button class="tab" data-cat="nina" onclick="filterCat('nina')">Niña</button>
+</div>
+
+<div class="zigzag"></div>
+
+<div class="grid-wrap">
+  <div class="grid" id="grid"></div>
+</div>
+
+<div class="zigzag flip"></div>
+
+<footer>
+  <div class="name">Confecciones 1A · Tu Estilo</div>
+  <div class="wa">📱 WhatsApp: 320 674 2163</div>
+  <div class="tag">Catálogo de ejemplo — las fotos reales de los modelos se agregarán próximamente</div>
+</footer>
+
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-header">
+    <h3>Tu pedido</h3>
+    <button onclick="closeCart()">✕</button>
+  </div>
+  <div class="drawer-items" id="drawerItems"></div>
+  <div class="drawer-footer">
+    <div class="note">Al enviar, te preguntaremos la talla y confirmamos el precio por WhatsApp 💬</div>
+    <button class="whatsapp-btn" id="waBtn" onclick="sendWhatsApp()">
+      <span>Enviar pedido por WhatsApp</span>
+    </button>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   ICONOS PLACEHOLDER (SVG) — reemplazar por fotos reales:
+   cada producto tiene "img": "ruta/a/la/foto.jpg".
+   Si "img" existe, se usa la foto; si no, se muestra el icono.
+   ========================================================= */
+const ICON_SHIRT = `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M35 15 L20 28 L28 42 L35 36 L35 88 L65 88 L65 36 L72 42 L80 28 L65 15 L58 22 L42 22 Z" fill="#2E7DAF"/>
+</svg>`;
+const ICON_DRESS = `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M40 12 L30 24 L36 30 L32 40 L20 85 L80 85 L68 40 L64 30 L70 24 L60 12 L54 18 L46 18 Z" fill="#D9457E"/>
+</svg>`;
+
+const PRODUCTS = [
+  {id:1, cat:'nino', modelo:'Modelo Deportivo Rojo', desc:'Conjunto camiseta + short', icon:ICON_SHIRT, img:'fotos/nino-adidas.jpg'},
+  {id:2, cat:'nino', modelo:'Modelo Elegante Rojo', desc:'Conjunto camiseta + short', icon:ICON_SHIRT, img:'fotos/nino-versace.jpg'},
+  {id:3, cat:'nino', modelo:'Modelo Safari Amarillo', desc:'Conjunto camiseta + short', icon:ICON_SHIRT, img:'fotos/nino-burberry.jpg'},
+  {id:4, cat:'nino', modelo:'Modelo Super Aventura', desc:'Conjunto capota + short', icon:ICON_SHIRT, img:'fotos/nino-mario.jpg'},
+  {id:5, cat:'nino', modelo:'Modelo Urbano', desc:'Conjunto camiseta + short', icon:ICON_SHIRT, img:'fotos/nino-mickey.jpg'},
+  {id:6, cat:'nina', modelo:'Modelo Princesa', desc:'Conjunto blusa + falda', icon:ICON_DRESS, img:'fotos/nina-bella.jpg'},
+  {id:7, cat:'nina', modelo:'Modelo Rosita', desc:'Conjunto blusa + falda', icon:ICON_DRESS, img:'fotos/nina-rosita.jpg'},
+  {id:8, cat:'nina', modelo:'Modelo Jardín', desc:'Conjunto blusa + falda', icon:ICON_DRESS, img:'fotos/nina-rapunzel-falda.jpg'},
+  {id:9, cat:'nina', modelo:'Modelo Flores', desc:'Conjunto blusa + short', icon:ICON_DRESS, img:'fotos/nina-rapunzel-short.jpg'},
+  {id:10, cat:'nina', modelo:'Modelo Dulzura', desc:'Conjunto blusa + falda', icon:ICON_DRESS, img:'fotos/nina-minnie.jpg'},
+];
+
+const WHATSAPP_NUMBER = '573206742163';
+
+let cart = {}; // { productId: qty }
+let currentFilter = 'todos';
+
+function renderGrid(){
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  const items = PRODUCTS.filter(p => currentFilter==='todos' || p.cat===currentFilter);
+  items.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.dataset.cat = p.cat;
+    const imgContent = p.img
+      ? `<img src="${p.img}" alt="${p.modelo}" style="width:100%;height:100%;object-fit:cover;object-position:top center;">`
+      : p.icon;
+    card.innerHTML = `
+      <div class="img-wrap">
+        <span class="badge">${p.cat==='nino' ? 'Niño' : 'Niña'}</span>
+        ${imgContent}
+      </div>
+      <div class="info">
+        <div class="modelo">${p.modelo}</div>
+        <div class="desc">${p.desc}</div>
+        <button class="add-btn" id="btn-${p.id}" onclick="addToCart(${p.id})">Agregar al carrito</button>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function filterCat(cat){
+  currentFilter = cat;
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.cat===cat));
+  renderGrid();
+}
+
+function addToCart(id){
+  cart[id] = (cart[id]||0) + 1;
+  updateCartUI();
+  const btn = document.getElementById(`btn-${id}`);
+  if(btn){
+    btn.textContent = '¡Agregado! ✓';
+    btn.classList.add('added');
+    setTimeout(()=>{ btn.textContent='Agregar al carrito'; btn.classList.remove('added'); }, 900);
+  }
+}
+
+function changeQty(id, delta){
+  cart[id] = (cart[id]||0) + delta;
+  if(cart[id] <= 0) delete cart[id];
+  updateCartUI();
+}
+
+function removeFromCart(id){
+  delete cart[id];
+  updateCartUI();
+}
+
+function updateCartUI(){
+  const totalCount = Object.values(cart).reduce((a,b)=>a+b,0);
+  document.getElementById('cartCount').textContent = totalCount;
+
+  const drawerItems = document.getElementById('drawerItems');
+  const ids = Object.keys(cart);
+  if(ids.length===0){
+    drawerItems.innerHTML = '<div class="empty-msg">Tu carrito está vacío 🧺<br>Agrega los conjuntos que te gusten</div>';
+    document.getElementById('waBtn').disabled = true;
+    return;
+  }
+  document.getElementById('waBtn').disabled = false;
+  drawerItems.innerHTML = ids.map(id => {
+    const p = PRODUCTS.find(x=>x.id==id);
+    const qty = cart[id];
+    return `
+      <div class="drawer-item">
+        <div class="thumb" style="background:${p.cat==='nino' ? '#DFF1FC':'#FDE3ED'}">${p.icon}</div>
+        <div class="meta">
+          <div class="modelo">${p.modelo}</div>
+          <div class="cat">${p.cat==='nino'?'Niño':'Niña'}</div>
+          <div class="qty-ctrl">
+            <button onclick="changeQty(${id},-1)">−</button>
+            <span>${qty}</span>
+            <button onclick="changeQty(${id},1)">+</button>
+          </div>
+        </div>
+        <button class="remove-btn" onclick="removeFromCart(${id})">Quitar</button>
+      </div>
+    `;
+  }).join('');
+}
+
+function openCart(){
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('overlay').classList.add('open');
+}
+function closeCart(){
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+}
+
+function sendWhatsApp(){
+  const ids = Object.keys(cart);
+  if(ids.length===0) return;
+  let msg = `¡Hola! 👋 Quiero hacer un pedido de Confecciones 1A:\n\n`;
+  ids.forEach(id => {
+    const p = PRODUCTS.find(x=>x.id==id);
+    msg += `• ${p.modelo} (${p.cat==='nino'?'Niño':'Niña'}) x${cart[id]}\n`;
+  });
+  msg += `\nMe gustaría confirmar tallas disponibles y precio. ¡Gracias!`;
+  const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+  window.open(url, '_blank');
+}
+
+renderGrid();
+updateCartUI();
+</script>
+
+</body>
+</html>
